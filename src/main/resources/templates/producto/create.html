@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="/layouts/_mainLayout">
+
+<head>
+    <title>Crear Producto</title>
+</head>
+
+<body>
+<div layout:fragment="content">
+    <h1>Crear nueva producto</h1>
+    <br>
+    <form th:action="@{/productos/save}" th:object="${producto}" method="post" enctype="multipart/form-data">
+        <br>
+        <div class="input-group input-group-static mb-4">
+            <label for="nombreV">Nombre</label>
+            <input type="text" class="form-control" th:field="*{nombreV}" id="nombreV" required>
+            <div class="form-control" th:if="${#fields.hasErrors('nombreV')}" th:errors="*{nombreV}"></div>
+        </div>
+        <div class="input-group input-group-static mb-4">
+            <label for="precioV">Precio</label>
+            <input type="number" class="form-control" th:field="*{precioV}" id="precioV" required>
+            <div class="form-control" th:if="${#fields.hasErrors('precioV')}" th:errors="*{precioV}"></div>
+        </div>
+        <div class="input-group input-group-static mb-4">
+            <label for="existenciaV">Existencia</label>
+            <input type="text" class="form-control" th:field="*{existenciaV}" id="existenciaV" required>
+            <div class="form-control" th:if="${#fields.hasErrors('existenciaV')}" th:errors="*{existenciaV}"></div>
+        </div>
+        <div class="input-group input-group-static mb-4">
+            <label for="categoriaV" class="ms-0">Categoria</label>
+            <select class="form-control" id="categoriaV" th:field="*{categoriaV.id}" required>
+                <option value="">Seleccione categoria</option>
+                <option th:each="categoria : ${categoria}"
+                        th:value="${categoria.id}"
+                        th:text="${categoria.nombreV}">
+                </option>
+            </select>
+        </div>
+
+        <hr>
+        <button type="submit" class="btn btn-primary">Guardar</button> |
+        <a th:href="@{/productos}" class="btn btn-secondary">Regresar</a>
+    </form>
+</div>
+</body>
+
+</html>

@@ -33,4 +33,9 @@ public class CategoriaVService implements ICategoriaVService {
     public void eliminarPorId(Long id) {
         categoriaVRepository.deleteById(id);
     }
+
+    @Override
+    public List<CategoriaV> listarTodosLasCategoria() {
+        return categoriaVRepository.findAll();
+    }
 }

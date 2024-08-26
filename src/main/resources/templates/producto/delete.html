@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="/layouts/_mainLayout">
+
+<head>
+    <title>Eliminar Producto</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+<div layout:fragment="content">
+    <h1>Eliminar Producto</h1>
+    <h2>¿Está seguro que desea eliminar esta marca?</h2>
+
+    <div>
+        <hr />
+
+        <dl class="row">
+            <dt class="col-sm-2 h3">Nombre:</dt>
+            <dd class="col-sm-10 h3" th:text="${producto.nombreV}"></dd>
+        </dl>
+        <dl class="row">
+            <dt class="col-sm-2 h3">Precio:</dt>
+            <dd class="col-sm-10 h3" th:text="${producto.precioV}"></dd>
+        </dl>
+        <dl class="row">
+            <dt class="col-sm-2 h3">Existencia:</dt>
+            <dd class="col-sm-10 h3" th:text="${producto.existenciaV}"></dd>
+        </dl>
+        <dl class="row">
+            <dt class="col-sm-2 h3">Marca:</dt>
+            <dd class="col-sm-10 h3" th:text="${producto.categoriaV.nombreV}"></dd>
+        </dl>
+
+
+        <form th:action="@{/productos/delete}" method="post">
+            <input type="hidden" name="id" th:value="${producto.id}">
+            <button type="submit" class="btn btn-danger">Eliminar</button> |
+            <a th:href="@{/productos}" class="btn btn-secondary">Regresar</a>
+        </form>
+    </div>
+</div>
+</body>
+
+</html>

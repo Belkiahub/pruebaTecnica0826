@@ -16,5 +16,7 @@ public interface ICategoriaVService {
 
     void eliminarPorId(Long id);
 
+    List<CategoriaV> listarTodosLasCategoria();
+
 
 }

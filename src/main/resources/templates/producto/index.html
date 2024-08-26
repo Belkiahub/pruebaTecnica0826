@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="/layouts/_mainLayout">
+
+<head>
+    <title>Lista de Productos</title>
+</head>
+<body>
+
+<div layout:fragment="content">
+    <h1>Lista de las Productos</h1>
+    <a th:href="@{/productos/create}" class="btn btn-outline-primary mb-3">Nueva producto</a>
+    <table class="table">
+        <thead class="table-dark">
+        <tr>
+            <th>Nombre</th>
+            <th>Precio</th>
+            <th>Existencia</th>
+            <th>Marca</th>
+            <th>Acciones</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="producto : ${producto}">
+            <td th:text="${producto.nombreV}"></td>
+            <td th:text="${producto.precioV}"></td>
+            <td th:text="${producto.existenciaV}"></td>
+            <td th:text="${producto.categoriaV.nombreV}"></td>
+            <td>
+                <a th:href="@{/productos/edit/{id}(id=${producto.id})}" class="btn btn-secondary">Editar</a>
+                <a th:href="@{/productos/remove/{id}(id=${producto.id})}" class="btn btn-danger">Eliminar</a>
+                <a th:href="@{/productos/details/{id}(id=${producto.id})}" class="btn btn-info">Detalle</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>
