@@ -1,0 +1,37 @@
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th>Etiquetas</th>
+        <th th:if="${action == 'create' || action == 'edit'}">
+            <button type="submit" class="btn btn-success" th:formaction="@{/productos/addproductos}">+</button>
+        </th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- Eliminar la fila duplicada -->
+    <tr th:each="item, index : ${producto.etiquetaV}">
+        <td style="display: none;">
+            <input type="hidden" class="form-control" th:value="${item.id}"
+                   th:name="'etiqueta[' + ${index} + '].id'" id="id">
+        </td>
+        <td>
+            <input type="text" class="form-control" th:value="${item.nombreV}" data-block
+                   th:name="'etiqueta[' + ${index} + '].nombreV'" id="nombreV" required>
+        </td>
+        <td th:if="${action == 'create' || action == 'edit'}">
+            <button type="submit" class="btn btn-outline-danger"
+                    th:formaction="@{/productos/delproductos/{id} (id = ${item.id})}">Eliminar</button>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<!-- Mover el script dentro de un bloque DOMContentLoaded -->
+<script th:if="${action == 'delete' || action == 'details'}">
+    document.addEventListener("DOMContentLoaded", function () {
+        const blockInputs = document.querySelectorAll("*[data-block]");
+        blockInputs.forEach(function (element) {
+            element.setAttribute("disabled", "disabled");
+        });
+    });
+</script>

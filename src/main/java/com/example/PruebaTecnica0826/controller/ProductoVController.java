@@ -1,6 +1,7 @@
 package com.example.PruebaTecnica0826.controller;
 
 import com.example.PruebaTecnica0826.modelos.CategoriaV;
+import com.example.PruebaTecnica0826.modelos.EtiquetaV;
 import com.example.PruebaTecnica0826.modelos.ProductoV;
 import com.example.PruebaTecnica0826.servicio.interfaces.ICategoriaVService;
 import com.example.PruebaTecnica0826.servicio.interfaces.IProductoVService;
@@ -10,12 +11,12 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -54,8 +55,95 @@ public class ProductoVController {
         return "producto/create";
     }
 
+    @PostMapping("/addproductos")
+    public String addProduct(ProductoV producto, Model model) {
+        if (producto.getEtiquetaV() == null)
+            producto.setEtiquetaV(new ArrayList<>());
+        producto.getEtiquetaV().add(new EtiquetaV(producto, ""));
+
+        if (producto.getEtiquetaV() != null) {
+            Long idDet = 0l;
+            for (EtiquetaV item : producto.getEtiquetaV()) {
+                if (item.getId() == null || item.getId() < 1) {
+                    idDet--;
+                    item.setId(idDet);
+                }
+            }
+        }
+
+        model.addAttribute("categoria", categoriaService.listarTodosLasCategoria());
+
+        model.addAttribute(producto);
+        if (producto.getId() != null && producto.getId() > 0)
+            return "producto/edit";
+        else
+            return "producto/create";
+    }
+
+    @PostMapping("/delproductos/{id}")
+    public String delProduct(@PathVariable("id") Long id, ProductoV producto, Model model) {
+        producto.getEtiquetaV().removeIf(elemento -> elemento.getId() == id);
+
+        model.addAttribute("categoria", categoriaService.listarTodosLasCategoria());
+
+        model.addAttribute(producto);
+        if (producto.getId() != null && producto.getId() > 0)
+            return "producto/edit";
+        else
+            return "producto/create";
+    }
+
     @PostMapping("/save")
-    public String save(ProductoV productoV) {
+    public String save(ProductoV productoV, BindingResult result, Model model, RedirectAttributes attributes) {
+        if (result.hasErrors()) {
+            model.addAttribute(productoV);
+            attributes.addFlashAttribute("error", "No se pudo guardar debido a un error.");
+            return "producto/create";
+        }
+
+        if (productoV.getEtiquetaV() != null) {
+            for (EtiquetaV item : productoV.getEtiquetaV()) {
+                if (item.getId() != null && item.getId() < 0)
+                    item.setId(null);
+                item.setProductoV(productoV);
+            }
+        }
+
+        if (productoV.getId() != null && productoV.getId() > 0) {
+            ProductoV productoUpdate = productoService.buscarPorId(productoV.getId()).get();
+            Map<Long, EtiquetaV> etiquetaData = new HashMap<>();
+            if (productoUpdate.getEtiquetaV() != null) {
+                for (EtiquetaV item : productoUpdate.getEtiquetaV()) {
+                    etiquetaData.put(item.getId(), item);
+                }
+            }
+            productoUpdate.setNombreV(productoV.getNombreV());
+            productoUpdate.setPrecioV(productoV.getPrecioV());
+            productoUpdate.setExistenciaV(productoV.getExistenciaV());
+            productoUpdate.setCategoriaV(productoV.getCategoriaV());
+            if (productoV.getEtiquetaV() != null) {
+                for (EtiquetaV item : productoV.getEtiquetaV()) {
+                    if (item.getId() == null) {
+                        if (productoUpdate.getEtiquetaV() == null)
+                            productoUpdate.setEtiquetaV(new ArrayList<>());
+                        item.setProductoV(productoUpdate);
+                        productoUpdate.getEtiquetaV().add(item);
+                    } else {
+                        if (etiquetaData.containsKey(item.getId())) {
+                            EtiquetaV etiquetaUpdate = etiquetaData.get(item.getId());
+                            etiquetaUpdate.setNombreV(item.getNombreV());
+                            etiquetaData.remove(item.getId());
+                        }
+                    }
+                }
+            }
+            if (!etiquetaData.isEmpty()) {
+                for (Map.Entry<Long, EtiquetaV> item : etiquetaData.entrySet()) {
+                    productoUpdate.getEtiquetaV().removeIf(elemento -> elemento.getId().equals(item.getKey()));
+                }
+            }
+            productoV = productoUpdate;
+        }
 
         productoService.crearOEditar(productoV);
         return "redirect:/productos";

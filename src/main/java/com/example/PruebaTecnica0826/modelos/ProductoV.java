@@ -1,8 +1,10 @@
 package com.example.PruebaTecnica0826.modelos;
 
 import jakarta.persistence.*;
+import jakarta.validation.Valid;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Entity
 public class ProductoV {
@@ -16,6 +18,9 @@ public class ProductoV {
     @ManyToOne
     @JoinColumn(name = "id_categoriav", referencedColumnName = "id")
     private CategoriaV categoriaV;
+    @Valid
+    @OneToMany(mappedBy = "productoV", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<EtiquetaV> etiquetaV;
 
     public Long getId() {
         return id;
@@ -55,5 +60,13 @@ public class ProductoV {
 
     public void setCategoriaV(CategoriaV categoriaV) {
         this.categoriaV = categoriaV;
+    }
+
+    public  List<EtiquetaV> getEtiquetaV() {
+        return etiquetaV;
+    }
+
+    public void setEtiquetaV(List<EtiquetaV> etiquetaV) {
+        this.etiquetaV = etiquetaV;
     }
 }

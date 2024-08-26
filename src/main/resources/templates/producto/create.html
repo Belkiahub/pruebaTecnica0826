@@ -10,9 +10,9 @@
 
 <body>
 <div layout:fragment="content">
-    <h1>Crear nueva producto</h1>
+    <h1>Crear nuevo producto</h1>
     <br>
-    <form th:action="@{/productos/save}" th:object="${producto}" method="post" enctype="multipart/form-data">
+    <form th:action="@{/productos/save}" th:object="${producto}" method="post" >
         <br>
         <div class="input-group input-group-static mb-4">
             <label for="nombreV">Nombre</label>
@@ -31,15 +31,18 @@
         </div>
         <div class="input-group input-group-static mb-4">
             <label for="categoriaV" class="ms-0">Categoria</label>
-            <select class="form-control" id="categoriaV" th:field="*{categoriaV.id}" required>
+            <select class="form-control" id="categoriaV" th:field="*{categoriaV.id}" >
                 <option value="">Seleccione categoria</option>
-                <option th:each="categoria : ${categoria}"
+                <option th:each="categoria : ${categorias}"
                         th:value="${categoria.id}"
                         th:text="${categoria.nombreV}">
                 </option>
             </select>
         </div>
-
+        <div class="row">
+            <!-- Fragmento de etiquetas insertado -->
+            <th:block th:insert="~{/producto/_etiqueta.html}" th:with="action='create'"></th:block>
+        </div>
         <hr>
         <button type="submit" class="btn btn-primary">Guardar</button> |
         <a th:href="@{/productos}" class="btn btn-secondary">Regresar</a>
