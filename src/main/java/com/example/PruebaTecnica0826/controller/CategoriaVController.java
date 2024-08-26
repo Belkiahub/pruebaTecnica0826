@@ -25,7 +25,7 @@ public class CategoriaVController {
 
     @GetMapping("/crear")
     public String mostrarFormularioCreacion(Model model) {
-        model.addAttribute("marca", new CategoriaV());
+        model.addAttribute("categoria", new CategoriaV());
         return "categoria/form";
     }
 
@@ -39,7 +39,7 @@ public class CategoriaVController {
     public String mostrarFormularioEdicion(@PathVariable Long id, Model model) {
         Optional<CategoriaV> marcaOpt = categoriaVService.buscarPorId(id);
         if (marcaOpt.isPresent()) {
-            model.addAttribute("categorias", marcaOpt.get());
+            model.addAttribute("categoria", marcaOpt.get());
             return "categoria/editar";
         }
         return "redirect:/categorias";
@@ -48,7 +48,7 @@ public class CategoriaVController {
     @GetMapping("/eliminar/{id}")
     public String eliminarConfirmacion(@PathVariable("id") Long id, Model model) {
         var categoria = categoriaVService.buscarPorId(id).orElseThrow(() -> new RuntimeException("Categoria no encontrada"));
-        model.addAttribute("categorias", categoria);
+        model.addAttribute("categoria", categoria);
         return "categoria/eliminar";
     }
 
@@ -61,7 +61,7 @@ public class CategoriaVController {
     @GetMapping("/detalle/{id}")
     public String verDetalle(@PathVariable("id") Long id, Model model) {
         var categoria = categoriaVService.buscarPorId(id).orElseThrow(() -> new RuntimeException("Marca no encontrada"));
-        model.addAttribute("categorias", categoria);
+        model.addAttribute("categoria", categoria);
         return "categoria/detalle";
     }
 }

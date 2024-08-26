@@ -2,6 +2,7 @@ package com.example.PruebaTecnica0826.modelos;
 
 import jakarta.persistence.*;
 
+@Entity
 public class CategoriaV {
 
     @Id

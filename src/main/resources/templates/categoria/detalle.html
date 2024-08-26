@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="/layouts/_mainLayout">
+
+<head>
+    <title>Detalle Categoria</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+<div layout:fragment="content">
+    <h1>Detalle de Categoria</h1>
+
+    <div>
+        <hr />
+        <dl class="row">
+            <dt class="col-sm-2 h3">Nombre:</dt>
+            <dd class="col-sm-10 h3" th:text="${categoria.nombreV}"></dd>
+        </dl>
+
+        <!-- Enlace para regresar a la lista de marcas -->
+        <a th:href="@{/categorias}" class="btn btn-secondary">Regresar</a>
+    </div>
+</div>
+</body>
+
+</html>

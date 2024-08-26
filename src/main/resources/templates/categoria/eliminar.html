@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="/layouts/_mainLayout">
+
+<head>
+    <title>Eliminar Marca</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+<div layout:fragment="content">
+    <h1>Eliminar Categoria</h1>
+    <h2>¿Está seguro que desea eliminar esta categoria?</h2>
+
+    <div>
+        <hr />
+
+        <dl class="row">
+            <dt class="col-sm-2 h3">Nombre:</dt>
+            <dd class="col-sm-10 h3" th:text="${categoria.nombreV}"></dd>
+        </dl>
+
+        <form th:action="@{/categorias/delete}" method="post">
+            <input type="hidden" name="id" th:value="${categoria.id}">
+            <button type="submit" class="btn btn-danger">Eliminar</button> |
+            <a th:href="@{/categorias}" class="btn btn-secondary">Regresar</a>
+        </form>
+    </div>
+</div>
+</body>
+
+</html>

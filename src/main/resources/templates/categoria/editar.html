@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="es"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="/layouts/_mainLayout">
+
+<head>
+    <title>Editar Categoria</title>
+</head>
+
+<body>
+<div layout:fragment="content">
+    <h1>Editar Categoria</h1>
+    <form th:action="@{/categorias/guardar}" th:object="${categoria}" method="post">
+        <input type="hidden" th:field="*{id}">
+        <br>
+        <div class="input-group input-group-static mb-4">
+            <label for="nombreV" >Nombre</label>
+            <input type="text" class="form-control" th:field="*{nombreV}" id="nombreV" placeholder="Escriba el nombre" required>
+        </div>
+        <hr>
+        <button type="submit" class="btn btn-primary">Guardar</button> |
+        <a th:href="@{/categorias}" class="btn btn-outline-secondary">Regresar</a>
+    </form>
+</div>
+</body>
+
+</html>
